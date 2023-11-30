@@ -1,44 +1,40 @@
-﻿using Bookie.DataAccess.Context;
+﻿using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Models.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Bookie.Web.Services;
 
 public class CategoryService : ICategoryService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CategoryService(AppDbContext dbContext)
+    public CategoryService(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Category> AddCategoryAsync(Category category)
+    public async Task AddCategoryAsync(Category category)
     {
-        var addResult = await _dbContext.Categories.AddAsync(category);
+        await _unitOfWork.Category.AddAsync(category);
 
-        await _dbContext.SaveChangesAsync();
-
-        return addResult.Entity;
+        await _unitOfWork.SaveAsync();
     }
 
-    public async Task DeleteCategoryAsync(int categoryId)
+    public async Task DeleteCategoryAsync(Category category)
     {
-        var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
-        _dbContext.Categories.Remove(category);
-        await _dbContext.SaveChangesAsync();
+        _unitOfWork.Category.Remove(category);
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
-        => await _dbContext.Categories.ToListAsync()
+        => await _unitOfWork.Category.GetAllAsync()
             ?? Enumerable.Empty<Category>();
     
     public async Task UpdateCategoryAsync(Category category)
     {
-        _dbContext.Categories.Update(category);
-        await _dbContext.SaveChangesAsync();
+        _unitOfWork.Category.Update(category);
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task<Category?> GetCategoryAsync(int? categoryId) 
-        => await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+        => await _unitOfWork.Category.GetAsync(c => c.Id == categoryId);
 }

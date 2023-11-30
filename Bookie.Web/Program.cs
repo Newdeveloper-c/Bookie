@@ -1,4 +1,6 @@
 using Bookie.DataAccess.Context;
+using Bookie.DataAccess.Repository;
+using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Web.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

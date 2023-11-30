@@ -36,7 +36,7 @@ public class CategoryController : Controller
             return View();
         }
 
-        var createResult = await _categoryService.AddCategoryAsync(category);
+        await _categoryService.AddCategoryAsync(category);
         TempData["success"] = "Category created successfully";
         return RedirectToAction("Index");
     }
@@ -85,9 +85,9 @@ public class CategoryController : Controller
     }
 
     [HttpPost, ActionName("Delete")]
-    public async Task<IActionResult> DeletePost(int id)
+    public async Task<IActionResult> DeletePost(Category category)
     {
-        await _categoryService.DeleteCategoryAsync(id);
+        await _categoryService.DeleteCategoryAsync(category);
         TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index");
     }
