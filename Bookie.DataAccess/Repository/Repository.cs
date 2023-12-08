@@ -19,11 +19,25 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task AddAsync(T  entity)
         => await _dbSet.AddAsync(entity);
 
-    public async Task<IEnumerable<T>> GetAllAsync()
-    => await _dbSet.ToListAsync();
+    public async Task<IEnumerable<T>> GetAllAsync(string? includeProp = null)
+    {
+        IQueryable<T> query = _dbSet;
+        if(includeProp != null)
+            foreach (var prop in includeProp.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                query = query.Include(prop);
+        
+        return await query.ToListAsync();
+    }
 
-    public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
-    => await _dbSet.FirstOrDefaultAsync(predicate);
+    public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate, string? includeProp = null)
+    {
+        IQueryable<T> query = _dbSet;
+        if (includeProp != null)
+            foreach (var prop in includeProp.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                query = query.Include(prop);
+
+        return await query.FirstOrDefaultAsync(predicate);
+    }
 
     public void Remove(T entity)
     => _dbSet.Remove(entity);

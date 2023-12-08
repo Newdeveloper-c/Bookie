@@ -1,9 +1,10 @@
 ﻿using Bookie.Models.Entities;
-using Bookie.Web.Services;
+using Bookie.Web.Areas.Admin.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookie.Web.Controllers;
+namespace Bookie.Web.Areas.Admin.Controllers;
 
+[Area("admin")]
 public class CategoryController : Controller
 {
     private readonly ICategoryService _categoryService;
@@ -31,7 +32,7 @@ public class CategoryController : Controller
             ModelState.AddModelError("name", "Category Name and Display Order can not be same.");
         if (category.Name?.ToLower() == "test")
             ModelState.AddModelError("", "Test is invalid value for Category Name.");
-        if (! ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return View();
         }
@@ -43,12 +44,12 @@ public class CategoryController : Controller
 
     public async Task<IActionResult> Edit(int? id)
     {
-        if(id == null || id <= 0)
+        if (id == null || id <= 0)
             return NotFound();
-        
+
         var category = await _categoryService.GetCategoryAsync(id);
 
-        if(category is null)
+        if (category is null)
             NotFound();
 
         return View(category);

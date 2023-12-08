@@ -1,6 +1,6 @@
 ﻿using Bookie.Models.Entities;
 
-namespace Bookie.Web.Services;
+namespace Bookie.Web.Areas.Admin.Services;
 
 public interface ICategoryService
 {
