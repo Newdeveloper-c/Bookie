@@ -24,7 +24,7 @@
                             <p class="text-dark text-opacity-75 text-center"> As low as: <span>@item.Price100.ToString("c", CultureInfo.GetCultureInfo("en-US"))</span></p>
                         </div>
                         <div>
-                            <a asp-action="Details" asp-route-itemid="@item.Id"
+                            <a asp-action="Details" asp-route-id="@item.Id" name="id"
                                class="btn btn-primary bg-gradient border-0 form-control">
                                 Details
                             </a>

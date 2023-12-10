@@ -15,7 +15,7 @@ public class HomeController : Controller
         _customerService = customerService;
     }
 
-    public async Task<IActionResult> IndexAsync()
+    public async Task<IActionResult> Index()
     {
         var products = await _customerService.GetAllProductsAsync();
         return View(products);
