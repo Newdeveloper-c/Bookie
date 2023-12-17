@@ -1,11 +1,14 @@
 ﻿using Bookie.Models.Entities;
 using Bookie.Models.ViewModels;
+using Bookie.Utilities;
 using Bookie.Web.Areas.Admin.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookie.Web.Areas.Admin.Controllers;
 
 [Area("admin")]
+[Authorize(Roles = StaticDetails.Role_Admin)]
 public class ProductController : Controller
 {
     private readonly IProductService _productService;

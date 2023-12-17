@@ -1,10 +1,13 @@
 ﻿using Bookie.Models.Entities;
+using Bookie.Utilities;
 using Bookie.Web.Areas.Admin.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookie.Web.Areas.Admin.Controllers;
 
 [Area("admin")]
+[Authorize(Roles = StaticDetails.Role_Admin)]
 public class CategoryController : Controller
 {
     private readonly ICategoryService _categoryService;
